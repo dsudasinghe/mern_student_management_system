@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 function AddStudent() {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+
+  function sendData(e) {
+    e.preventDefault();
+
+    const newStudent = {
+      name,
+      age,
+      gender,
+    };
+
+    axios
+      .post("http://localhost:8070/student/add", newStudent)
+      .then(() => {
+        alert("Student Added");
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
+
   return (
     <div className="container">
-      <form>
+      <form onSubmit={sendData}>
         <div className="mb-3">
           <label for="name" className="form-label">
             Student Name
@@ -13,6 +37,9 @@ function AddStudent() {
             className="form-control"
             id="name"
             placeholder="Enter Student Name"
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
           />
         </div>
         <div className="mb-3">
@@ -24,6 +51,9 @@ function AddStudent() {
             className="form-control"
             id="age"
             placeholder="Student Age"
+            onChange={(e) => {
+              setAge(e.target.value);
+            }}
           />
         </div>
         <div className="mb-3">
@@ -35,6 +65,9 @@ function AddStudent() {
             className="form-control"
             id="gender"
             placeholder="Student Gender"
+            onChange={(e) => {
+              setGender(e.target.value);
+            }}
           />
         </div>
         <button type="submit" className="btn btn-primary">
